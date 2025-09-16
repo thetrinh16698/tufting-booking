@@ -1,5 +1,5 @@
 'use client';
-import { extendedBookings } from '@wix/bookings';
+import { extendedBookings } from '@app/types/wix-compat';
 import { Tooltip } from 'flowbite-react';
 import { MouseEventHandler, PropsWithChildren, useState } from 'react';
 import { useClientAuthSession } from '@app/hooks/useClientAuthSession';

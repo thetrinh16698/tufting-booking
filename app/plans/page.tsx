@@ -3,7 +3,7 @@ import { safeGetPaidPlans } from '@app/model/paid-plans/paid-plans-api';
 import { formatCurrencyToParts } from '@app/utils/price-formtter';
 import { getCheckoutUrl } from '@app/model/paid-plans/paid-plans-checkout';
 import PlanSelect from '@app/components/Plan/PlanSelect';
-import { plans } from '@wix/pricing-plans';
+import { plans } from '@app/types/wix-compat';
 import testIds from '@app/utils/test-ids';
 
 const durationPeriodFormatter = (
@@ -60,8 +60,9 @@ export default async function PlansPage({
 }: {
   searchParams: { [_: string]: string };
 }) {
-  const { planIds, checkoutData } = searchParams;
-  const wixSession = useServerAuthSession();
+  const resolvedSearchParams = await searchParams;
+  const { planIds, checkoutData } = resolvedSearchParams;
+  const wixSession = await useServerAuthSession();
   const { data: plans } = await safeGetPaidPlans(wixSession, {
     planIds: planIds ? planIds?.split(',') : undefined,
   });

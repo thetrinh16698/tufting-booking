@@ -1,11 +1,8 @@
-export enum ServiceType {
-  INDIVIDUAL = 'INDIVIDUAL',
-  GROUP = 'GROUP',
+// Internal service types for the booking system
+
+export enum OfferedAsType {
+  BOOKING = 'BOOKING',
   COURSE = 'COURSE',
 }
 
-export enum OfferedAsType {
-  ONLINE = 'ONE_TIME',
-  OFFLINE = 'ONE_TIME',
-  PRICING_PLAN = 'PRICING_PLAN',
-}
+// You can add more service-related types here as needed

@@ -1,7 +1,7 @@
 'use client';
 import { PropsWithChildren } from 'react';
 import { Tooltip } from 'flowbite-react';
-import type { availabilityCalendar } from '@wix/bookings';
+import type { availabilityCalendar } from '@app/types/wix-compat';
 import testIds from '@app/utils/test-ids';
 
 export type SlotViewModel = {

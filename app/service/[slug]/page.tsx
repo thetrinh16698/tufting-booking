@@ -15,9 +15,10 @@ const offeredAsToPaymentOptions = (offeredAs: string) =>
     : 'Other';
 
 export default async function ServicePage({ params }: any) {
-  const wixSession = useServerAuthSession();
-  const { data: service } = params.slug
-    ? await getServiceBySlug(wixSession, params.slug)
+  const wixSession = await useServerAuthSession();
+  const resolvedParams = await params;
+  const { data: service } = resolvedParams.slug
+    ? await getServiceBySlug(wixSession, resolvedParams.slug)
     : { data: null };
 
   return <ServicePageWithFallback service={service} />;

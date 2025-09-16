@@ -1,70 +1,93 @@
-import {
-  mapServiceInfo,
-  ServiceInfoViewModel,
-} from '@app/model/service/service.mapper';
-import { WixSession } from '../auth/auth';
-import { safeCall } from '@app/model/utils';
+// Service API functions to replace Wix service functionality
+import { ServiceInfoViewModel, mapServiceToViewModel } from './service.mapper';
 
-export const safeGetServices = (
-  wixSession?: WixSession,
-  { limit = 100, categoryId = '' } = {}
-) =>
-  safeCall<{ services: ServiceInfoViewModel[] }>(
-    () => getServices(wixSession, { limit, categoryId }),
-    { services: [] },
-    'Query Services'
-  );
+export const getServiceBySlug = async (
+  session: any,
+  slug: string
+): Promise<{ data: ServiceInfoViewModel | null }> => {
+  // For now, this is a placeholder that returns mock service data
+  // In a real implementation, this would call your custom service API
+  
+  console.warn('Service API not implemented - returning mock data');
+  
+  // Mock service data - you can replace this with actual API calls
+  const mockService = {
+    id: 'mock-service-1',
+    slug: slug,
+    name: 'Advanced Tufting Workshop',
+    description: 'Learn advanced tufting techniques in our comprehensive workshop',
+    duration: 120, // 2 hours
+    price: 75.00,
+    category: {
+      id: 'category-1',
+      name: 'Workshops',
+      slug: 'workshops',
+    },
+  };
 
-export const getServices = (
-  wixSession?: WixSession,
-  { limit = 100, categoryId = '' } = {}
-): Promise<{ services: ServiceInfoViewModel[] }> => {
-  let queryBuilder = wixSession!
-    .wixClient!.services.queryServices()
-    .limit(limit);
-  if (categoryId) {
-    queryBuilder = queryBuilder.eq('category.id', categoryId);
-  }
-  return queryBuilder.find().then((result) => {
-    return {
-      services:
-        (result.items?.map(mapServiceInfo) as ServiceInfoViewModel[]) ?? [],
-    };
-  });
+  // Return the service in the expected format
+  return {
+    data: mapServiceToViewModel(mockService),
+  };
 };
 
-export const getServiceBySlug = (
-  wixSession: WixSession,
-  serviceSlug: string
-): Promise<{
-  data: ServiceInfoViewModel | null;
-  hasError: boolean;
-  errorMsg?: string;
-}> =>
-  safeCall<ServiceInfoViewModel | null>(
-    () =>
-      wixSession
-        .wixClient!.services.queryServices()
-        .eq('mainSlug.name', decodeURIComponent(serviceSlug))
-        .find()
-        .then((result) =>
-          result.items?.length ? mapServiceInfo(result.items[0]) : null
-        ),
-    null,
-    'Get Service By Slug'
-  );
-
-export const getServiceById = (
-  wixSession: WixSession,
+export const getServiceById = async (
+  session: any,
   serviceId: string
-): Promise<{
-  data: ServiceInfoViewModel | null;
-  hasError: boolean;
-  errorMsg?: string;
-}> =>
-  safeCall<ServiceInfoViewModel | null>(
-    () =>
-      wixSession.wixClient!.services.getService(serviceId).then(mapServiceInfo),
-    null,
-    'Get Service By Id'
-  );
+): Promise<{ data: ServiceInfoViewModel | null }> => {
+  // Mock service data by ID
+  const mockService = {
+    id: serviceId,
+    slug: `service-${serviceId}`,
+    name: 'Advanced Tufting Workshop',
+    description: 'Learn advanced tufting techniques in our comprehensive workshop',
+    duration: 120, // 2 hours
+    price: 75.00,
+    category: {
+      id: 'category-1',
+      name: 'Workshops',
+      slug: 'workshops',
+    },
+  };
+
+  return {
+    data: mapServiceToViewModel(mockService),
+  };
+};
+
+export const getServices = async (
+  session: any,
+  options?: { categoryId?: string }
+): Promise<{ data: ServiceInfoViewModel[] }> => {
+  // Mock services data
+  const mockServices = [
+    {
+      id: 'mock-service-1',
+      name: 'Advanced Tufting Workshop',
+      description: 'Learn advanced tufting techniques',
+      duration: 120,
+      price: 75.00,
+      category: {
+        id: 'category-1',
+        name: 'Workshops',
+        slug: 'workshops',
+      },
+    },
+    {
+      id: 'mock-service-2',
+      name: 'Beginner Tufting Class',
+      description: 'Perfect for beginners',
+      duration: 90,
+      price: 50.00,
+      category: {
+        id: 'category-1',
+        name: 'Workshops',
+        slug: 'workshops',
+      },
+    },
+  ];
+
+  return {
+    data: mockServices.map(mapServiceToViewModel),
+  };
+};

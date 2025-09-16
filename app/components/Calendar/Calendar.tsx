@@ -23,7 +23,7 @@ import CalendarSlots, {
   SlotViewModel,
 } from '@app/components/Calendar/CalendarSections/CalendarSlots';
 import CalendarSidebar from '@app/components/Calendar/CalendarSections/CalendarSidebar';
-import { availabilityCalendar } from '@wix/bookings';
+import { availabilityCalendar } from '@app/types/wix-compat';
 import testIds from '@app/utils/test-ids';
 
 type CalendarDateRange = { from: string; to: string };

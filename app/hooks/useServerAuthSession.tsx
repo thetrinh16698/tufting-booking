@@ -1,8 +1,20 @@
-import { WixSession } from '@app/model/auth/auth';
-import { getServerWixClient } from '@app/model/auth/wix-client.server';
-import { cookies as nextCookies } from 'next/headers';
-export const useServerAuthSession = (): WixSession => {
+// Server-side authentication hook for NextAuth.js
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@app/lib/auth';
+
+export const useServerAuthSession = async () => {
+  // Get the server session using NextAuth.js
+  const session = await getServerSession(authOptions);
+  
+  // Return a session object that matches the expected interface
   return {
-    wixClient: getServerWixClient({ cookieStore: nextCookies() }),
+    session,
+    isAuthenticated: !!session,
+    // Mock wixClient for components that expect it
+    wixClient: session ? {
+      auth: {
+        loggedIn: () => !!session,
+      },
+    } : null,
   };
 };

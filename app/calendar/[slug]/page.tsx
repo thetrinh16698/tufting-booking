@@ -5,8 +5,9 @@ import { useServerAuthSession } from '@app/hooks/useServerAuthSession';
 import testIds from '@app/utils/test-ids';
 
 export default async function CalendarPage({ params }: any) {
-  const wixSession = useServerAuthSession();
-  const { data: service } = await getServiceBySlug(wixSession, params.slug);
+  const wixSession = await useServerAuthSession();
+  const resolvedParams = await params;
+  const { data: service } = await getServiceBySlug(wixSession, resolvedParams.slug);
 
   return (
     <div className="bg-white max-w-full-content mx-auto">

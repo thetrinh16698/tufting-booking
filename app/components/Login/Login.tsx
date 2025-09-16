@@ -1,65 +1,53 @@
 'use client';
-import Cookies from 'js-cookie';
-import dynamic from 'next/dynamic';
-import { useClientAuthSession } from '@app/hooks/useClientAuthSession';
-import {
-  AUTH_CALLBACK_PATHNAME,
-  AUTH_LOGIN_CALLBACK_PARAM,
-  AUTH_LOGIN_PATHNAME,
-  WIX_REFRESH_TOKEN,
-} from '@app/model/auth/auth.const';
-import { WixBookingsClientProvider } from '@app/components/Provider/WixBookingsClientProvider';
-import MemberAvatar from '@app/components/Login/MemberAvatar';
-
-const URLS_WITH_NO_AVATAR = [AUTH_CALLBACK_PATHNAME, AUTH_LOGIN_PATHNAME];
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 
 type LoginProps = {
   onActionClick: (isLoggedIn: boolean) => void;
 };
-const LoginComp = ({ onActionClick }: LoginProps) => {
-  const { wixClient } = useClientAuthSession();
-  const isLoggedIn = wixClient?.auth.loggedIn();
-  const onLoginClick = async () => {
-    onActionClick(!!isLoggedIn);
-    if (isLoggedIn) {
-      // after logout return to home page
-      const { logoutUrl } = await wixClient!.auth.logout(
-        window.location.origin
-      );
-      Cookies.remove(WIX_REFRESH_TOKEN);
-      window.location.href = logoutUrl;
+
+export default function Login({ onActionClick }: LoginProps) {
+  const { data: session, status } = useSession();
+  const pathname = usePathname();
+  
+  const URLS_WITH_NO_AVATAR = ['/auth/signin'];
+
+  const handleLoginClick = () => {
+    onActionClick(!!session);
+    if (session) {
+      signOut({ callbackUrl: '/' });
     } else {
-      const loginUrl = new URL(AUTH_LOGIN_PATHNAME, window.location.origin);
-      loginUrl.searchParams.set(
-        AUTH_LOGIN_CALLBACK_PARAM,
-        window.location.href
-      );
-      window.location.href = loginUrl.toString();
+      signIn(undefined, { callbackUrl: pathname });
     }
   };
-  return URLS_WITH_NO_AVATAR.includes(window.location.pathname) ? null : (
+
+  if (URLS_WITH_NO_AVATAR.includes(pathname)) {
+    return null;
+  }
+
+  return (
     <button
-      onClick={onLoginClick}
+      onClick={handleLoginClick}
       className="flex flex-nowrap gap-2 justify-center items-center"
     >
       <div className="w-[22px] h-[22px] fill-turquoise-200">
-        <MemberAvatar />
+        {session?.user?.image ? (
+          <img
+            src={session.user.image}
+            alt="User avatar"
+            className="w-full h-full rounded-full"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-300 rounded-full flex items-center justify-center">
+            <span className="text-xs text-gray-600">
+              {session?.user?.name?.charAt(0) || '?'}
+            </span>
+          </div>
+        )}
       </div>
       <div className="flex relative whitespace-nowrap">
-        {isLoggedIn ? 'Log Out' : 'Log In'}
+        {session ? 'Log Out' : 'Log In'}
       </div>
     </button>
-  );
-};
-
-const LoginNoSsr = dynamic(() => Promise.resolve(LoginComp), {
-  ssr: false,
-});
-
-export default function Login(props: LoginProps) {
-  return (
-    <WixBookingsClientProvider>
-      <LoginNoSsr {...props} />
-    </WixBookingsClientProvider>
   );
 }

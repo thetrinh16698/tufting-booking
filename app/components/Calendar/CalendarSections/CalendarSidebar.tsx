@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 
 import { useServiceFormattedPrice } from '@app/hooks/useServiceFormattedPrice';
 import { SlotViewModel } from '@app/components/Calendar/CalendarSections/CalendarSlots';
-import type { availabilityCalendar } from '@wix/bookings';
+import type { availabilityCalendar } from '@app/types/wix-compat';
 import { useClientAuthSession } from '@app/hooks/useClientAuthSession';
 import { createRedirectCallbacks } from '@app/model/redirects/redirect.utils';
 import testIds from '@app/utils/test-ids';

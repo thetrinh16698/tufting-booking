@@ -10,7 +10,6 @@ const nextConfig = {
   },
   env: {},
   reactStrictMode: true,
-  swcMinify: true,
   experimental: {},
   eslint: {
     dirs: ['app', 'src'],

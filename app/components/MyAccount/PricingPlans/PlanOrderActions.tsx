@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useClientAuthSession } from '@app/hooks/useClientAuthSession';
 import { WixBookingsClientProvider } from '@app/components/Provider/WixBookingsClientProvider';
-import type { orders } from '@wix/pricing-plans';
+import type { orders } from '@app/types/wix-compat';
 import { cancelPlanOrder } from '@app/model/paid-plans/paid-plans-api';
 
 export type PlanOrderActionsProps = {
