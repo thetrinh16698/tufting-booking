@@ -807,8 +807,8 @@ __metadata:
   linkType: hard
 
 "@prisma/client@npm:^6.16.1":
-  version: 6.16.1
-  resolution: "@prisma/client@npm:6.16.1"
+  version: 6.16.3
+  resolution: "@prisma/client@npm:6.16.3"
   peerDependencies:
     prisma: "*"
     typescript: ">=5.1.0"
@@ -817,7 +817,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: da713d17461226433cbf17e85fe2ac0ad0f589ec66e775723b1529b0f10632b6e6bc25ec119305baeea0616be1ded7d4a9135887d62a431373e0761da2c06fa8
+  checksum: 890c8c4cad31c19836f1fa06a1858e8a25e59d1f93bba15e3b4b4b1c1dce0f0b16c2308bb801f273f940c5d1df923d0b4ff7492a160a89e6164a316d198c5296
   languageName: node
   linkType: hard
 
